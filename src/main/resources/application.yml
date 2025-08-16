@@ -1,3 +1,5 @@
+# 이전 강의에서 공부했던 persistence.xml 파일은 Spring을 사용하지 않는 Java 애플리캐이션 사용 설정 파일
+# Spring Boot 환경에서는 해당 application.yml 을 통해 DB + JPA + 스프링 설정들을 셋팅할 수 있음
 spring:
   datasource:
     url: 'jdbc:h2:mem:library'
