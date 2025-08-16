@@ -6,6 +6,8 @@ fun main(){
     calculatorTest.addTest()
     calculatorTest.minusTest()
     calculatorTest.multiplyTest()
+    calculatorTest.deviceTest()
+    calculatorTest.diviceExceptionTest()
 }
 
 // test 코드는 기존 사용하는 디렉토리 클래스와 경로를 동일하게 맞춘 뒤
@@ -51,5 +53,39 @@ class CalculatorTest {
         if(calculator.number != 15){
             throw IllegalStateException()
         }
+    }
+
+    fun deviceTest(){
+        // given
+        val calculator = Calculator(5)
+
+        // when
+        calculator.divide(2)
+
+        // then
+        if(calculator.number != 2){
+            throw IllegalStateException()
+        }
+    }
+
+    fun diviceExceptionTest(){
+        // given
+        val calculator = Calculator(5)
+
+        // when
+        try {
+            calculator.divide(0)
+        }catch (e:IllegalArgumentException){
+            // 로그 상 메시지 확인할 때에는 print로 찍어야 확인 가능함
+            println(e.message)
+            if(e.message != "0으로 나눌 수 없습니다"){
+                throw IllegalStateException("메시지가 다릅니다.")
+            }
+            // 테스트 성공
+            return
+        }catch (e:Exception){
+            throw IllegalStateException()
+        }
+        throw IllegalStateException("기대하는 에러가 발생하지 않았습니다.")
     }
 }
