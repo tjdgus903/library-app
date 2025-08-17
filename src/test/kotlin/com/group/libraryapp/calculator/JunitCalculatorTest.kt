@@ -18,11 +18,11 @@ class JunitCalculatorTest {
         // Junit 에서는 assertThat 을 통해 값을 체크하여
         // console에서 실제 값과 오차를 확인할 수 있음
         // assertThat(확인하고자 하는 값).isEqualTo(기대값)
-        assertThat(calculator.number).isEqualTo(7)
+        assertThat(calculator.number).isEqualTo(8)
 
         // 주어진 값이 true 인지 false 인지 검증
         assertThat(calculator.number == 8).isTrue
-        assertThat(calculator.number == 8).isFalse()
+        assertThat(calculator.number == 7).isFalse()
     }
 
     @Test
@@ -60,7 +60,7 @@ class JunitCalculatorTest {
         calculator.divide(3)
 
         // then
-        assertThat(calculator.number).isEqualTo(2)
+        assertThat(calculator.number).isEqualTo(1)
     }
 
     @Test
