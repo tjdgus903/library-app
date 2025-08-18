@@ -9,6 +9,9 @@ import java.util.Optional
 // 각각 User, Long 이 들어가야 됨
 interface UserRepository : JpaRepository<User, Long>{
 
-    fun findByName(name: String): Optional<User>
+    // 스프링에서는 ? 가 있으면 값을 조회하여 값이 있으면 User,
+    // 없으면 자동으로 null 이 들어가게끔 셋팅을 하고 있음
+    // 스프링이 코틀린을 지원하기 때문에 호환되는 코드
+    fun findByName(name: String): User?
 
 }
