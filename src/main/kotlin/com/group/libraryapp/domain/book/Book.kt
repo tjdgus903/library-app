@@ -1,16 +1,15 @@
 package com.group.libraryapp.domain.book
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
 class Book (
     val name: String,
 
-    // 책의 유형은 한번 지정되면 바뀌지 않아서 val로 지정
-    val type: String,
+    // enum 에 설정되어있는 값이 String 으로 조회
+    // enum ORDINAL 는 순번으로 조회
+    @Enumerated(EnumType.STRING)
+    val type: BookType,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +32,7 @@ class Book (
         fun fixture(
             // 값들은 default 값들을 넣어줌
             name: String = "책 이름",
-            type: String = "COMPUTER",
+            type: BookType = BookType.COMPUTER,
             id: Long? = null,
         ): Book{
             return Book(
