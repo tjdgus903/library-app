@@ -2,8 +2,11 @@ package com.group.libraryapp.service.user
 
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
+import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
+import com.group.libraryapp.dto.user.response.BookHistoryReponse
+import com.group.libraryapp.dto.user.response.UserLoanHistoryResponse
 import com.group.libraryapp.dto.user.response.UserResponse
 import com.group.libraryapp.util.fail
 import com.group.libraryapp.util.findByIdOrThrow
@@ -51,5 +54,23 @@ class UserService (
         val user = userRepository.findByName(name) ?: fail()
         userRepository.delete(user)
     }
+
+    // json 방식으로 api 값을 조회할 때
+    // map 방식을 사용하여 books 까지 조회
+    @Transactional(readOnly = true)
+    fun getUserLoanHistories(): List<UserLoanHistoryResponse> {
+        return userRepository.findAll().map { user ->
+            UserLoanHistoryResponse(
+                name = user.name,
+                books = user.userLoanHistoreis.map { history ->
+                    BookHistoryReponse(
+                        name = history.bookName,
+                        isReturn = history.status == UserLoanStatus.RETURNED
+                    )
+                }
+            )
+        }
+    }
+
 
 }
