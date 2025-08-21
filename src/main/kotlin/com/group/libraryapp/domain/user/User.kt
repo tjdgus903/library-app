@@ -52,7 +52,7 @@ class User constructor(
     }
 
     fun loanBook(book: Book){
-        this.userLoanHistoreis.add(UserLoanHistory(this, book.name, false))
+        this.userLoanHistoreis.add(UserLoanHistory.fixture(this, book.name))
     }
 
     fun returnBook(bookName: String){
