@@ -59,6 +59,13 @@ class UserService (
     // map 방식을 사용하여 books 까지 조회
     @Transactional(readOnly = true)
     fun getUserLoanHistories(): List<UserLoanHistoryResponse> {
+        // 현재 이 코드에서는 findAll 을 통해 모든 회원의 데이터를 조회하고
+        // 하위 books 를 통해 각각 회원 정보에서 대출 정보를 조회하고 있음
+        // 이러한 구도에서는 4명 같이 소수 인원을 조회할 때 유리하지만
+        // 1000명, 10000명, 10만명 등등 조회 숫자가 많아지면
+        // 성능의 이슈까지 이어질 수 있는데 이러한 문제를 n+1 문제라고 함
+        // 이러한 전략을 Lazy Fetching 이라고 하는데 이 문제를 해결하기위해
+        // SQL join query 를 적용시킬 수 있어야 됨
         return userRepository.findAll().map { user ->
             UserLoanHistoryResponse(
                 name = user.name,
