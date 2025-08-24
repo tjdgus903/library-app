@@ -2,10 +2,9 @@ package com.group.libraryapp.service.user
 
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
-import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
-import com.group.libraryapp.dto.user.response.BookHistoryReponse
+import com.group.libraryapp.dto.user.response.BookHistoryResponse
 import com.group.libraryapp.dto.user.response.UserLoanHistoryResponse
 import com.group.libraryapp.dto.user.response.UserResponse
 import com.group.libraryapp.util.fail
@@ -66,16 +65,17 @@ class UserService (
         // 성능의 이슈까지 이어질 수 있는데 이러한 문제를 n+1 문제라고 함
         // 이러한 전략을 Lazy Fetching 이라고 하는데 이 문제를 해결하기위해
         // SQL join query 를 적용시킬 수 있어야 됨
-        return userRepository.findAllWithHistories().map { user ->
-            UserLoanHistoryResponse(
+        return userRepository.findAllWithHistories().map(UserLoanHistoryResponse::of)
+        /*{ user -> UserLoanHistoryResponse(
                 name = user.name,
-                books = user.userLoanHistories.map { history ->
-                    BookHistoryReponse(
-                        name = history.bookName,
-                        isReturn = history.status == UserLoanStatus.RETURNED
-                    )
+                books = user.userLoanHistories.map(BookHistoryResponse::of)
+                // 바로 BookHistoryResPonse 를 호출하여 사용도 가능
+                // books = user.userLoanHistories.map(BookHistoryResponse::of)
+                // books = user.userLoanHistories.map {
+                //   of 를 사용하여 단순하게 변경 가능
+                    history ->BookHistoryResponse.of(history)
                 }
             )
-        }
+        }*/
     }
 }
