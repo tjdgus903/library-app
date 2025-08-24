@@ -9,6 +9,7 @@ import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
+import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.dto.user.response.UserResponse
 import com.group.libraryapp.util.fail
 import org.springframework.stereotype.Service
@@ -43,5 +44,28 @@ class BookService constructor(
     fun returnBook(request: BookReturnRequest){
         val user = userRepository.findByName(request.userName) ?: fail()
         user.returnBook(request.bookName)
+    }
+
+    @Transactional (readOnly = true)
+    fun countLoanedBook(): Int{
+        return userLoanHistoryRepository.findAllByStatus(UserLoanStatus.LOANED).size
+    }
+
+    @Transactional(readOnly = true)
+    fun getBookStatistics(): List<BookStatResponse>{
+        val results = mutableListOf<BookStatResponse>()
+        val books = bookRepository.findAll()
+        for (book in books){
+            // 코틀린 코드로 아래와 같이 줄일 수 있음
+            results.firstOrNull{ dto -> book.type == dto.type}?.plusOne()
+                ?: results.add(BookStatResponse(book.type, 1))
+            /* val targetDto = results.firstOrNull{ dto -> book.type == dto.type}
+            if(targetDto == null){
+                results.add(BookStatResponse(book.type, 1))
+            }else{
+                targetDto.plusOne()
+            }*/
+        }
+        return results
     }
 }
