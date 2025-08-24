@@ -34,7 +34,7 @@ class User constructor(
     // 이것은 정해진 것이 없기 때문에 각각 프로젝트 규율에 따라 가면 됨
     // 이전 강의에서 들었던 김영한의 jpa 에서는 모두 body 에 선언함
     @OneToMany(mappedBy="user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val userLoanHistoreis: MutableList<UserLoanHistory> = mutableListOf(),
+    val userLoanHistories: MutableList<UserLoanHistory> = mutableListOf(),
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,11 +52,11 @@ class User constructor(
     }
 
     fun loanBook(book: Book){
-        this.userLoanHistoreis.add(UserLoanHistory.fixture(this, book.name))
+        this.userLoanHistories.add(UserLoanHistory.fixture(this, book.name))
     }
 
     fun returnBook(bookName: String){
-        this.userLoanHistoreis.first{ history -> history.bookName == bookName}.doReturn()
+        this.userLoanHistories.first{ history -> history.bookName == bookName}.doReturn()
     }
 
 }

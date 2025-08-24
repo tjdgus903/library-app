@@ -66,10 +66,10 @@ class UserService (
         // 성능의 이슈까지 이어질 수 있는데 이러한 문제를 n+1 문제라고 함
         // 이러한 전략을 Lazy Fetching 이라고 하는데 이 문제를 해결하기위해
         // SQL join query 를 적용시킬 수 있어야 됨
-        return userRepository.findAll().map { user ->
+        return userRepository.findAllWithHistories().map { user ->
             UserLoanHistoryResponse(
                 name = user.name,
-                books = user.userLoanHistoreis.map { history ->
+                books = user.userLoanHistories.map { history ->
                     BookHistoryReponse(
                         name = history.bookName,
                         isReturn = history.status == UserLoanStatus.RETURNED
