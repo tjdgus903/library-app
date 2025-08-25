@@ -53,19 +53,8 @@ class BookService constructor(
 
     @Transactional(readOnly = true)
     fun getBookStatistics(): List<BookStatResponse>{
-        val results = mutableListOf<BookStatResponse>()
-        val books = bookRepository.findAll()
-        for (book in books){
-            // 코틀린 코드로 아래와 같이 줄일 수 있음
-            results.firstOrNull{ dto -> book.type == dto.type}?.plusOne()
-                ?: results.add(BookStatResponse(book.type, 1))
-            /* val targetDto = results.firstOrNull{ dto -> book.type == dto.type}
-            if(targetDto == null){
-                results.add(BookStatResponse(book.type, 1))
-            }else{
-                targetDto.plusOne()
-            }*/
-        }
-        return results
+        return bookRepository.findAll() // List<Book>
+            .groupBy { book -> book.type }  // Map<BookType, List<Book>>
+            .map { (type, books) -> BookStatResponse(type, books.size) }    // List<BookStatResponse>
     }
 }
