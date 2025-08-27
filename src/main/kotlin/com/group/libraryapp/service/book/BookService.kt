@@ -12,6 +12,7 @@ import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.dto.user.response.UserResponse
 import com.group.libraryapp.util.fail
+import org.apache.tomcat.jni.File.getStat
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -48,13 +49,17 @@ class BookService constructor(
 
     @Transactional (readOnly = true)
     fun countLoanedBook(): Int{
-        return userLoanHistoryRepository.findAllByStatus(UserLoanStatus.LOANED).size
+        // count 쿼리 타입 변환(건수가 많아도 부하가 덜듬)
+        return userLoanHistoryRepository.countByStatus(UserLoanStatus.LOANED).toInt()
+        // 전체 데이터 쿼리 메모리 로딩 + size
+        // return userLoanHistoryRepository.findAllByStatus(UserLoanStatus.LOANED).size
     }
 
     @Transactional(readOnly = true)
     fun getBookStatistics(): List<BookStatResponse>{
-        return bookRepository.findAll() // List<Book>
-            .groupBy { book -> book.type }  // Map<BookType, List<Book>>
-            .map { (type, books) -> BookStatResponse(type, books.size) }    // List<BookStatResponse>
+        return bookRepository.getStat()
+        //return bookRepository.findAll() // List<Book>
+        //    .groupBy { book -> book.type }  // Map<BookType, List<Book>>
+        //    .map { (type, books) -> BookStatResponse(type, books.size) }    // List<BookStatResponse>
     }
 }
