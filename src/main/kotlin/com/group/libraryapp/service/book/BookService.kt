@@ -11,6 +11,7 @@ import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.dto.user.response.UserResponse
+import com.group.libraryapp.repository.book.BookQuerydslRepository
 import com.group.libraryapp.util.fail
 import org.apache.tomcat.jni.File.getStat
 import org.springframework.stereotype.Service
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 class BookService constructor(
     // 기존 자바코드에서 final 이여서 변경이 안되는 변수로 선언되어있기 때문에 val 로 셋팅
     private val bookRepository: BookRepository,
+    private val bookQuerydslRepository: BookQuerydslRepository,
     private val userRepository: UserRepository,
     private val userLoanHistoryRepository: UserLoanHistoryRepository,
 ){
@@ -57,7 +59,7 @@ class BookService constructor(
 
     @Transactional(readOnly = true)
     fun getBookStatistics(): List<BookStatResponse>{
-        return bookRepository.getStat()
+        return bookQuerydslRepository.getStats()
         //return bookRepository.findAll() // List<Book>
         //    .groupBy { book -> book.type }  // Map<BookType, List<Book>>
         //    .map { (type, books) -> BookStatResponse(type, books.size) }    // List<BookStatResponse>
