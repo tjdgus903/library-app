@@ -12,6 +12,7 @@ import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.dto.user.response.UserResponse
 import com.group.libraryapp.repository.book.BookQuerydslRepository
+import com.group.libraryapp.repository.user.UserLoanHistoryQuerydslRepository
 import com.group.libraryapp.util.fail
 import org.apache.tomcat.jni.File.getStat
 import org.springframework.stereotype.Service
@@ -23,7 +24,7 @@ class BookService constructor(
     private val bookRepository: BookRepository,
     private val bookQuerydslRepository: BookQuerydslRepository,
     private val userRepository: UserRepository,
-    private val userLoanHistoryRepository: UserLoanHistoryRepository,
+    private val userLoanHistoryQuerydslRepository: UserLoanHistoryQuerydslRepository,
 ){
 
     @Transactional
@@ -35,7 +36,7 @@ class BookService constructor(
     @Transactional
     fun loanBook(request: BookLoanRequest){
         val book = bookRepository.findByName(request.bookName) ?: fail()
-        if(userLoanHistoryRepository.findByBookNameAndStatus(request.bookName, UserLoanStatus.LOANED) != null){
+        if(userLoanHistoryQuerydslRepository.find(request.bookName, UserLoanStatus.LOANED) != null){
             throw IllegalArgumentException("진작 대출되어 있는 책입니다")
         }
 
@@ -52,7 +53,7 @@ class BookService constructor(
     @Transactional (readOnly = true)
     fun countLoanedBook(): Int{
         // count 쿼리 타입 변환(건수가 많아도 부하가 덜듬)
-        return userLoanHistoryRepository.countByStatus(UserLoanStatus.LOANED).toInt()
+        return userLoanHistoryQuerydslRepository.count(UserLoanStatus.LOANED).toInt()
         // 전체 데이터 쿼리 메모리 로딩 + size
         // return userLoanHistoryRepository.findAllByStatus(UserLoanStatus.LOANED).size
     }
