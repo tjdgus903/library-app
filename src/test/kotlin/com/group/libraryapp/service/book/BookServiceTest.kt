@@ -12,8 +12,8 @@ import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.dto.book.response.BookStatResponse
+import com.group.libraryapp.service.CleaningSpringBookTest
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
-import org.hibernate.query.criteria.internal.expression.function.AggregationFunction.COUNT
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -24,13 +24,16 @@ class BookServiceTest @Autowired constructor(
     private val bookRepository: BookRepository,
     private val userRepository: UserRepository,
     private val userLoanHistoryRepository: UserLoanHistoryRepository
-    ){
+    ): CleaningSpringBookTest() {
 
+/*
+    CleaningSpringBooktTest 로 대체
     @AfterEach
     fun clean(){
         bookRepository.deleteAll()
         userRepository.deleteAll()
     }
+*/
 
     @Test
     @DisplayName("책 등록 정상 동작 확인")

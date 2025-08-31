@@ -1,10 +1,12 @@
 package com.group.libraryapp.service.user
 
+import com.group.libraryapp.domain.book.BookRepository
+import com.group.libraryapp.domain.book.Book
+import com.group.libraryapp.domain.book.BookType
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
-import com.group.libraryapp.dto.user.response.BookHistoryResponse
 import com.group.libraryapp.dto.user.response.UserLoanHistoryResponse
 import com.group.libraryapp.dto.user.response.UserResponse
 import com.group.libraryapp.util.fail
@@ -15,7 +17,16 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class UserService (
     private val userRepository: UserRepository,
-){
+    private val bookRepository: BookRepository,
+
+    ){
+
+    fun saveUserAndLoanTwoBooks(){
+        val newUser = User("A", 123)
+        val books = bookRepository.saveAll(listOf(Book("책1", BookType.COMPUTER), Book("책2", BookType.COMPUTER)))
+        books.forEach { book -> newUser.loanBook(book) }    // UserLoanHistory 2개 생성
+        userRepository.save(newUser)
+    }
 
     @Transactional
     fun saveUser(request: UserCreateRequest){
