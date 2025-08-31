@@ -1,5 +1,19 @@
 # 📚 Kotlin + Spring Boot + JPA Backend Project
 
+![Uploading image.png…]()
+
+
+## 🛠 기술 스택
+- **Language:** Kotlin, Java  
+- **Framework:** Spring Boot, Spring Data JPA  
+- **Query:** QueryDSL, JPQL  
+- **Database:** MySQL  
+- **Test:** Junit5, Spring Boot Test  
+- **Etc:** Gradle, Git  
+
+---
+
+
 ## 🎯 학습 및 구현 성과
 - **Kotlin + JPA 환경**
   - Null 안정성, 불변 객체 처리, Lazy Loading 문제 해결
@@ -12,15 +26,6 @@
 
 ---
 
-## 🛠 기술 스택
-- **Language:** Kotlin, Java  
-- **Framework:** Spring Boot, Spring Data JPA  
-- **Query:** QueryDSL, JPQL  
-- **Database:** MySQL  
-- **Test:** Junit5, Spring Boot Test  
-- **Etc:** Gradle, Git  
-
----
 
 ## 📌 주요 기능
 
@@ -43,3 +48,4 @@
 - 동일 기능을 DB와 애플리케이션 레벨에서 구현 후 성능 분석
 - 함수형 프로그래밍 스타일 적용
 - 설계 선택지별 장단점 정리 및 문서화
+
